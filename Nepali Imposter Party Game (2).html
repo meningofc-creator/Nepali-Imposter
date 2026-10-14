@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nepali Imposter Party Game | हामीमध्ये को ढोंगी?</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'Mukta', 'sans-serif'],
+                        nepali: ['Mukta', 'sans-serif'],
+                        serif: ['Cinzel', 'Georgia', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Theme Engine: Dynamic Variables */
+        :root {
+            /* Theme 1: Himalayan Modern (Default) */
+            --bg-body: #0b1325;
+            --bg-gradient: linear-gradient(135deg, #0b1325 0%, #172a4d 50%, #002254 100%);
+            --bg-card: rgba(23, 37, 68, 0.85);
+            --bg-card-solid: #172544;
+            --accent-primary: #dc2626;
+            --accent-secondary: #003893;
+            --accent-gold: #f59e0b;
+            --accent-glow: rgba(220, 38, 38, 0.4);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.12);
+            --card-front-bg: linear-gradient(145deg, #1e293b, #0f172a);
+            --card-border: rgba(245, 158, 11, 0.35);
+            --radius: 1.25rem;
+            --font-family: 'Outfit', 'Mukta', sans-serif;
+            --header-font: 'Outfit', sans-serif;
+        }
+
+        /* Theme 2: Patan Heritage (Traditional & Elegant) */
+        [data-theme="heritage"] {
+            --bg-body: #1c100d;
+            --bg-gradient: linear-gradient(135deg, #1c100d 0%, #301611 50%, #421c15 100%);
+            --bg-card: rgba(45, 24, 18, 0.9);
+            --bg-card-solid: #2d1812;
+            --accent-primary: #8c2d19;
+            --accent-secondary: #d4af37;
+            --accent-gold: #d4af37;
+            --accent-glow: rgba(212, 175, 55, 0.35);
+            --text-primary: #fdf6e2;
+            --text-secondary: #cbb898;
+            --border-color: rgba(212, 175, 55, 0.25);
+            --card-front-bg: linear-gradient(145deg, #381a14, #24100c);
+            --card-border: rgba(212, 175, 55, 0.5);
+            --header-font: 'Cinzel', serif;
+        }
+
+        /* Theme 3: Kathmandu Neon (Vibrant Cyber/Party) */
+        [data-theme="neon"] {
+            --bg-body: #060913;
+            --bg-gradient: linear-gradient(135deg, #060913 0%, #0d1326 50%, #150626 100%);
+            --bg-card: rgba(13, 19, 38, 0.88);
+            --bg-card-solid: #0d1326;
+            --accent-primary: #ff007f;
+            --accent-secondary: #00e5ff;
+            --accent-gold: #ffe600;
+            --accent-glow: rgba(0, 229, 255, 0.5);
+            --text-primary: #ffffff;
+            --text-secondary: #8e9bb4;
+            --border-color: rgba(0, 229, 255, 0.25);
+            --card-front-bg: linear-gradient(145deg, #121b38, #080c1d);
+            --card-border: rgba(0, 229, 255, 0.6);
+            --header-font: 'Outfit', sans-serif;
+        }
+
+        /* Theme 4: Lumbini Zen (Clean Light Mode) */
+        [data-theme="lumbini"] {
+            --bg-body: #fdfbf7;
+            --bg-gradient: linear-gradient(135deg, #fdfbf7 0%, #f4efe6 50%, #e9e3d5 100%);
+            --bg-card: rgba(255, 255, 255, 0.92);
+            --bg-card-solid: #ffffff;
+            --accent-primary: #2d5a43;
+            --accent-secondary: #b87333;
+            --accent-gold: #d97706;
+            --accent-glow: rgba(45, 90, 67, 0.2);
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: rgba(45, 90, 67, 0.18);
+            --card-front-bg: linear-gradient(145deg, #f3f4f6, #ffffff);
+            --card-border: rgba(45, 90, 67, 0.35);
+            --header-font: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            border-radius: var(--radius);
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        /* 3D Card Flip Animation */
+        .card-flip {
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px var(--accent-glow); }
+            50% { box-shadow: 0 0 30px var(--accent-glow); }
+        }
+
+        .imposter-glow {
+            animation: pulseGlow 2s infinite;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
+
+        .theme-font-header {
+            font-family: var(--header-font);
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between min-h-screen p-3 md:p-6 overflow-x-hidden">
+
+    <!-- Top Navigation Header -->
+    <header class="w-full max-w-2xl mx-auto flex justify-between items-center py-2.5 px-4 glass-card mb-4 border-b-2" style="border-bottom-color: var(--accent-primary);">
+        <div class="flex items-center gap-2.5">
+            <span class="text-2xl filter drop-shadow">🇳🇵</span>
+            <div>
+                <h1 class="text-lg md:text-xl font-black tracking-wider uppercase theme-font-header text-transparent bg-clip-text" style="background-image: linear-gradient(to right, var(--accent-gold), var(--accent-primary));">
+                    Hamimadhye Imposter
+                </h1>
+                <p class="text-[11px] font-nepali font-semibold" style="color: var(--text-secondary);">हामीमध्ये को ढोंगी? (Party Game)</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <!-- Quick Theme Picker Trigger -->
+            <button onclick="toggleThemeModal()" class="py-1.5 px-3 rounded-xl flex items-center gap-1.5 text-xs font-bold transition border" style="background: var(--bg-card-solid); border-color: var(--border-color); color: var(--text-primary);">
+                <i class="fas fa-palette text-amber-400"></i>
+                <span class="hidden sm:inline">Theme</span>
+            </button>
+
+            <!-- Sound Toggle -->
+            <button id="soundToggleBtn" onclick="toggleSound()" class="w-9 h-9 rounded-xl flex items-center justify-center transition border" style="background: var(--bg-card-solid); border-color: var(--border-color);">
+                <i id="soundIcon" class="fas fa-volume-up text-amber-400 text-sm"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Game View Container -->
+    <main class="w-full max-w-2xl mx-auto flex-1 flex flex-col justify-center my-auto">
+        
+        <!-- SCREEN 1: Setup & Player Configuration -->
+        <section id="setupScreen" class="glass-card p-5 md:p-8 space-y-6">
+            <div class="text-center space-y-1">
+                <h2 class="text-2xl font-black flex items-center justify-center gap-2 theme-font-header" style="color: var(--accent-gold);">
+                    <i class="fas fa-gamepad"></i> Game Setup / खेलको तयारी
+                </h2>
+                <p class="text-xs" style="color: var(--text-secondary);">Customize your players, category & hint rules</p>
+            </div>
+
+            <!-- Player Names List -->
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <label class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-primary);">
+                        <i class="fas fa-users text-red-500 mr-1"></i> Players (<span id="playerCount">4</span>):
+                    </label>
+                    <span class="text-[11px]" style="color: var(--text-secondary);">3 to 10 players</span>
+                </div>
+                
+                <div id="playerInputsContainer" class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto custom-scrollbar pr-1">
+                    <!-- Dynamic Input Fields injected by JS -->
+                </div>
+
+                <div class="flex gap-2 pt-1">
+                    <button onclick="addPlayer()" class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border transition" style="background: var(--bg-card-solid); border-color: var(--border-color); color: var(--text-primary);">
+                        <i class="fas fa-plus text-emerald-500"></i> Add Player
+                    </button>
+                    <button onclick="removePlayer()" class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border transition" style="background: var(--bg-card-solid); border-color: var(--border-color); color: var(--text-primary);">
+                        <i class="fas fa-minus text-rose-500"></i> Remove Player
+                    </button>
+                </div>
+            </div>
+
+            <!-- Category Selection -->
+            <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-wider flex items-center justify-between" style="color: var(--text-primary);">
+                    <span><i class="fas fa-layer-group text-sky-400 mr-1"></i> Select Category / विषय छान्नुहोस्:</span>
+                </label>
+                <div id="categoryGrid" class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    <!-- Dynamic Category Cards -->
+                </div>
+            </div>
+
+            <!-- Imposter Count & Rules Settings -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-1">
+                <div class="p-3 rounded-2xl border" style="background: var(--bg-card-solid); border-color: var(--border-color);">
+                    <label class="text-xs font-bold block mb-1" style="color: var(--text-primary);">Imposters / ढोंगी</label>
+                    <select id="imposterCountSelect" class="w-full rounded-xl py-2 px-2 text-xs font-bold focus:outline-none border" style="background: var(--bg-body); border-color: var(--border-color); color: var(--accent-gold);">
+                        <option value="1" selected>1 Imposter</option>
+                        <option value="2">2 Imposters</option>
+                    </select>
+                </div>
+
+                <div class="p-3 rounded-2xl border flex items-center justify-between" style="background: var(--bg-card-solid); border-color: var(--border-color);">
+                    <div>
+                        <span class="text-xs font-bold block" style="color: var(--text-primary);">Show Category?</span>
+                        <span class="text-[10px]" style="color: var(--text-secondary);">Visible to Imposter</span>
+                    </div>
+                    <input type="checkbox" id="showCategoryToggle" checked class="w-5 h-5 accent-red-600 rounded cursor-pointer">
+                </div>
+
+                <div class="p-3 rounded-2xl border flex items-center justify-between" style="background: var(--bg-card-solid); border-color: var(--border-color);">
+                    <div>
+                        <span class="text-xs font-bold block" style="color: var(--text-primary);">Allow Imposter Hints</span>
+                        <span class="text-[10px]" style="color: var(--text-secondary);">Clue button on card</span>
+                    </div>
+                    <input type="checkbox" id="allowHintsToggle" checked class="w-5 h-5 accent-amber-500 rounded cursor-pointer">
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="pt-2 flex gap-3">
+                <button onclick="openCustomWordModal()" class="w-1/3 py-3 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 border transition" style="background: var(--bg-card-solid); border-color: var(--border-color); color: var(--text-primary);">
+                    <i class="fas fa-plus-circle text-amber-400"></i> Custom Word
+                </button>
+                <button onclick="startGame()" class="w-2/3 py-3 rounded-2xl font-black text-white shadow-lg text-sm tracking-wide flex items-center justify-center gap-2 transform active:scale-95 transition" style="background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));">
+                    <i class="fas fa-play"></i> START GAME / खेल सुरु
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 2: Pass & Reveal Phase -->
+        <section id="revealScreen" class="hidden glass-card p-6 text-center space-y-6">
+            <div class="space-y-1">
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border" style="background: rgba(0, 56, 147, 0.2); color: var(--accent-gold); border-color: var(--border-color);">
+                    Pass & Reveal Phase
+                </span>
+                <h2 id="currentTurnPlayerTitle" class="text-2xl font-extrabold mt-2" style="color: var(--text-primary);">
+                    Pass Device to: <span id="revealPlayerName" style="color: var(--accent-gold);">Player 1</span>
+                </h2>
+                <p class="text-xs" style="color: var(--text-secondary);">Keep screen private while viewing your secret role</p>
+            </div>
+
+            <!-- 3D Flip Card Container -->
+            <div class="card-flip w-full max-w-sm mx-auto h-80 cursor-pointer" onclick="toggleCardFlip()">
+                <div id="cardInner" class="card-inner w-full h-full relative rounded-3xl shadow-2xl">
+                    
+                    <!-- Card Front (Covered State) -->
+                    <div class="card-front absolute inset-0 w-full h-full border-2 rounded-3xl p-6 flex flex-col justify-between items-center text-center shadow-xl" style="background: var(--card-front-bg); border-color: var(--card-border);">
+                        <div class="w-full flex justify-between items-center text-xs" style="color: var(--text-secondary);">
+                            <span>🇳🇵 SECRET ROLE</span>
+                            <i class="fas fa-eye text-amber-400"></i>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="w-20 h-20 mx-auto rounded-full border-2 flex items-center justify-center" style="background: var(--bg-body); border-color: var(--border-color);">
+                                <i class="fas fa-lock text-3xl" style="color: var(--accent-gold);"></i>
+                            </div>
+                            <h3 class="text-base font-bold uppercase tracking-wider" style="color: var(--text-primary);">TAP CARD TO REVEAL ROLE</h3>
+                            <p class="text-xs font-nepali" style="color: var(--text-secondary);">कार्ड छुनुहोस् र भूमिका हेर्नुहोस्</p>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-widest" style="color: var(--text-secondary);">Confidential / गोप्य</span>
+                    </div>
+
+                    <!-- Card Back (Revealed Secret State) -->
+                    <div id="cardBackView" class="card-back absolute inset-0 w-full h-full border-2 rounded-3xl p-6 flex flex-col justify-between items-center text-center overflow-y-auto custom-scrollbar" style="background: var(--bg-card-solid); border-color: var(--border-color);">
+                        <div class="w-full flex justify-between items-center text-xs" style="color: var(--text-secondary);">
+                            <span id="cardCategoryBadge" class="font-bold text-emerald-400">Category</span>
+                            <i class="fas fa-eye-slash"></i>
+                        </div>
+                        
+                        <div id="secretDisplayContent" class="space-y-3 w-full my-auto">
+                            <!-- Dynamic Content for Citizen or Imposter injected by JS -->
+                        </div>
+
+                        <p class="text-xs italic" style="color: var(--text-secondary);">Tap card again to hide & finish turn</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <button id="nextPlayerBtn" onclick="nextPlayerTurn()" disabled class="w-full py-4 rounded-2xl font-bold text-sm transition flex items-center justify-center gap-2 opacity-50 cursor-not-allowed" style="background: var(--bg-card-solid); color: var(--text-secondary); border: 1px solid var(--border-color);">
+                <span>NEXT PLAYER</span> <i class="fas fa-arrow-right"></i>
+            </button>
+        </section>
+
+        <!-- SCREEN 3: Discussion & Clue Phase -->
+        <section id="discussionScreen" class="hidden glass-card p-6 text-center space-y-5">
+            <div class="space-y-1">
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border text-emerald-400" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3);">
+                    Phase 2: Discussion / छलफल
+                </span>
+                <h2 class="text-2xl font-black text-white">Questioning & Clues</h2>
+                <p class="text-xs" style="color: var(--text-secondary);">Citizens must give subtle hints without leaking the word!</p>
+            </div>
+
+            <!-- Starter Prompt Card -->
+            <div class="p-4 rounded-2xl border text-left relative overflow-hidden" style="background: var(--bg-card-solid); border-color: var(--border-color);">
+                <div class="text-[10px] uppercase font-bold mb-1 flex items-center gap-1" style="color: var(--accent-gold);">
+                    <i class="fas fa-lightbulb"></i> Starter Clue Prompt / प्रश्नको संकेत:
+                </div>
+                <p id="starterQuestionText" class="text-sm font-semibold" style="color: var(--text-primary);">
+                    "Loading prompt..."
+                </p>
+                <button onclick="generateRandomPrompt()" class="mt-2 text-xs text-sky-400 hover:underline flex items-center gap-1 font-semibold">
+                    <i class="fas fa-sync-alt"></i> New Prompt
+                </button>
+            </div>
+
+            <!-- Discussion Timer Graphic -->
+            <div class="space-y-2 py-1">
+                <div class="text-4xl font-black tracking-widest font-mono" id="timerDisplay" style="color: var(--accent-gold);">
+                    03:00
+                </div>
+                <div class="flex justify-center gap-2">
+                    <button onclick="toggleTimer()" id="timerToggleBtn" class="py-2 px-4 rounded-xl text-xs font-bold border flex items-center gap-2" style="background: var(--bg-card-solid); border-color: var(--border-color); color: var(--text-primary);">
+                        <i class="fas fa-pause"></i> Pause
+                    </button>
+                    <button onclick="resetTimer()" class="py-2 px-4 rounded-xl text-xs font-bold border" style="background: var(--bg-card-solid); border-color: var(--border-color); color: var(--text-secondary);">
+                        Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Speaker Order -->
+            <div class="p-3 rounded-xl border text-xs flex items-center justify-between" style="background: var(--bg-body); border-color: var(--border-color);">
+                <span style="color: var(--text-secondary);">First Speaker / पहिलो वक्ता:</span>
+                <span id="firstSpeakerName" class="font-bold text-sm" style="color: var(--accent-gold);">Player 1</span>
+            </div>
+
+            <button onclick="goToVotingPhase()" class="w-full py-3.5 rounded-2xl font-black text-white shadow-lg text-sm tracking-wide flex items-center justify-center gap-2 transform active:scale-95 transition" style="background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));">
+                <i class="fas fa-vote-yea"></i> PROCEED TO VOTE / मतदानमा जानुहोस्
+            </button>
+        </section>
+
+        <!-- SCREEN 4: Voting Screen -->
+        <section id="votingScreen" class="hidden glass-card p-6 space-y-5">
+            <div class="text-center space-y-1">
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border text-rose-400" style="background: rgba(225, 29, 72, 0.15); border-color: rgba(225, 29, 72, 0.3);">
+                    Voting Phase / मतदान
+                </span>
+                <h2 class="text-2xl font-black" style="color: var(--text-primary);">Who is the Imposter?</h2>
+                <p class="text-xs" style="color: var(--text-secondary);">Tap the player suspected by majority vote</p>
+            </div>
+
+            <div id="votingList" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-60 overflow-y-auto custom-scrollbar pr-1">
+                <!-- Dynamic Suspect Cards -->
+            </div>
+
+            <button id="confirmAccusationBtn" onclick="revealSuspectResult()" disabled class="w-full py-3.5 rounded-2xl font-black text-sm flex items-center justify-center gap-2 transition opacity-50 cursor-not-allowed" style="background: var(--bg-card-solid); color: var(--text-secondary); border: 1px solid var(--border-color);">
+                <i class="fas fa-gavel"></i> CONFIRM ACCUSATION / निर्णय पुष्टि
+            </button>
+        </section>
+
+        <!-- SCREEN 5: Imposter Final Counter-Guess -->
+        <section id="imposterGuessScreen" class="hidden glass-card p-6 text-center space-y-5 border-2" style="border-color: var(--accent-gold);">
+            <div class="space-y-1">
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); border-color: var(--border-color);">
+                    🚨 Imposter Caught! / ढोंगी समातियो!
+                </span>
+                <h2 class="text-2xl font-black" style="color: var(--text-primary);">
+                    <span id="caughtImposterName" style="color: var(--accent-primary);">Imposter</span>, One Last Chance!
+                </h2>
+                <p class="text-xs" style="color: var(--text-secondary);">
+                    Guess the secret topic correctly to STEAL the victory!
+                </p>
+            </div>
+
+            <div class="space-y-3 p-4 rounded-2xl border text-left" style="background: var(--bg-card-solid); border-color: var(--border-color);">
+                <label class="text-xs font-bold block" style="color: var(--accent-gold);">
+                    Category: <span id="guessCategoryTitle" style="color: var(--text-primary);">Nepali Foods</span>
+                </label>
+                
+                <div id="guessOptionsGrid" class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto custom-scrollbar pr-1">
+                    <!-- Dynamic Options -->
+                </div>
+            </div>
+
+            <button onclick="skipImposterGuess()" class="text-xs underline hover:opacity-80" style="color: var(--text-secondary);">
+                I give up / अनुमान नगर्ने
+            </button>
+        </section>
+
+        <!-- SCREEN 6: Game Results & Scoreboard -->
+        <section id="resultScreen" class="hidden glass-card p-6 text-center space-y-5">
+            <div id="resultBanner" class="p-4 rounded-2xl space-y-1 shadow-md" style="background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));">
+                <div id="resultEmoji" class="text-4xl my-1">🏆</div>
+                <h2 id="resultTitle" class="text-2xl font-black text-white">CITIZENS WIN!</h2>
+                <p id="resultSubtitle" class="text-xs font-nepali text-slate-100">नागरिकहरूको जीत भयो!</p>
+            </div>
+
+            <!-- Secret Word & Roles -->
+            <div class="space-y-3 p-4 rounded-2xl border text-left" style="background: var(--bg-card-solid); border-color: var(--border-color);">
+                <div class="flex justify-between items-center border-b pb-2" style="border-color: var(--border-color);">
+                    <span class="text-xs" style="color: var(--text-secondary);">Secret Word / मुख्य शब्द:</span>
+                    <span id="finalSecretWord" class="text-base font-bold" style="color: var(--accent-gold);">Momo / मम:</span>
+                </div>
+                
+                <div class="space-y-2 pt-1">
+                    <span class="text-xs font-semibold" style="color: var(--text-primary);">Roles Summary:</span>
+                    <div id="rolesBreakdownList" class="space-y-1 max-h-32 overflow-y-auto text-xs custom-scrollbar pr-1">
+                        <!-- Dynamic list -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scoreboard -->
+            <div class="p-3 rounded-2xl border space-y-2" style="background: var(--bg-body); border-color: var(--border-color);">
+                <h3 class="text-xs font-bold text-left flex items-center justify-between" style="color: var(--text-primary);">
+                    <span><i class="fas fa-trophy text-amber-400 mr-1"></i> Match Scores:</span>
+                </h3>
+                <div id="scoreboardList" class="grid grid-cols-2 gap-2 text-xs">
+                    <!-- Dynamic scores -->
+                </div>
+            </div>
+
+            <div class="flex gap-2.5 pt-1">
+                <button onclick="resetGameSamePlayers()" class="w-1/2 py-3 rounded-2xl font-bold text-xs border flex items-center justify-center gap-2" style="background: var(--bg-card-solid); border-color: var(--border-color); color: var(--text-primary);">
+                    <i class="fas fa-redo"></i> Play Again
+                </button>
+                <button onclick="returnToSetup()" class="w-1/2 py-3 rounded-2xl font-black text-white text-xs flex items-center justify-center gap-2 shadow-md" style="background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));">
+                    <i class="fas fa-cog"></i> Setup Game
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL 1: Professional Theme Suite Selection -->
+    <div id="themeModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md p-6 space-y-5 border" style="border-color: var(--border-color);">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-bold flex items-center gap-2 theme-font-header" style="color: var(--accent-gold);">
+                        <i class="fas fa-palette"></i> Select Aesthetic Theme
+                    </h3>
+                    <p class="text-xs" style="color: var(--text-secondary);">Choose your visual environment</p>
+                </div>
+                <button onclick="toggleThemeModal()" class="w-8 h-8 rounded-full flex items-center justify-center border" style="background: var(--bg-card-solid); border-color: var(--border-color);">
+                    <i class="fas fa-times text-xs"></i>
+                </button>
+            </div>
+
+            <!-- Theme Grid Options -->
+            <div class="grid grid-cols-1 gap-3">
+                <!-- Theme 1: Himalayan Modern -->
+                <button onclick="setTheme('default')" class="theme-card p-3 rounded-2xl border text-left flex items-center justify-between transition hover:scale-[1.01]" style="background: #0b1325; border-color: #003893;">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🏔️</span>
+                        <div>
+                            <div class="text-xs font-bold text-white">Himalayan Modern</div>
+                            <div class="text-[10px] text-slate-400">Deep Navy & Crimson Glass</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-1">
+                        <span class="w-4 h-4 rounded-full bg-slate-900 border border-slate-700"></span>
+                        <span class="w-4 h-4 rounded-full bg-blue-700"></span>
+                        <span class="w-4 h-4 rounded-full bg-red-600"></span>
+                    </div>
+                </button>
+
+                <!-- Theme 2: Patan Heritage -->
+                <button onclick="setTheme('heritage')" class="theme-card p-3 rounded-2xl border text-left flex items-center justify-between transition hover:scale-[1.01]" style="background: #1c100d; border-color: #d4af37;">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">📜</span>
+                        <div>
+                            <div class="text-xs font-bold text-amber-100 font-serif">Patan Heritage</div>
+                            <div class="text-[10px] text-amber-300/70">Clay Mahogany & Antique Gold</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-1">
+                        <span class="w-4 h-4 rounded-full bg-stone-900 border border-amber-900"></span>
+                        <span class="w-4 h-4 rounded-full bg-amber-800"></span>
+                        <span class="w-4 h-4 rounded-full bg-amber-500"></span>
+                    </div>
+                </button>
+
+                <!-- Theme 3: Kathmandu Neon -->
+                <button onclick="setTheme('neon')" class="theme-card p-3 rounded-2xl border text-left flex items-center justify-between transition hover:scale-[1.01]" style="background: #060913; border-color: #00e5ff;">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🌃</span>
+                        <div>
+                            <div class="text-xs font-bold text-cyan-300">Kathmandu Neon</div>
+                            <div class="text-[10px] text-pink-400">Cyber Cyan & Electric Magenta</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-1">
+                        <span class="w-4 h-4 rounded-full bg-black border border-cyan-500"></span>
+                        <span class="w-4 h-4 rounded-full bg-cyan-400"></span>
+                        <span class="w-4 h-4 rounded-full bg-pink-600"></span>
+                    </div>
+                </button>
+
+                <!-- Theme 4: Lumbini Zen -->
+                <button onclick="setTheme('lumbini')" class="theme-card p-3 rounded-2xl border text-left flex items-center justify-between transition hover:scale-[1.01]" style="background: #fdfbf7; border-color: #2d5a43;">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🕊️</span>
+                        <div>
+                            <div class="text-xs font-bold text-emerald-950">Lumbini Zen</div>
+                            <div class="text-[10px] text-emerald-800">Serene Ivory & Sage Green</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-1">
+                        <span class="w-4 h-4 rounded-full bg-amber-50 border border-emerald-900"></span>
+                        <span class="w-4 h-4 rounded-full bg-emerald-700"></span>
+                        <span class="w-4 h-4 rounded-full bg-amber-600"></span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Add Custom Word Dialog -->
+    <div id="customWordModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md p-6 space-y-4 border" style="border-color: var(--border-color);">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-bold flex items-center gap-2" style="color: var(--accent-gold);">
+                    <i class="fas fa-plus-circle"></i> Add Custom Word
+                </h3>
+                <button onclick="closeCustomWordModal()" class="w-8 h-8 rounded-full flex items-center justify-center border" style="background: var(--bg-card-solid); border-color: var(--border-color);">
+                    <i class="fas fa-times text-xs"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="text-xs font-semibold block mb-1" style="color: var(--text-primary);">Custom Secret Word</label>
+                    <input type="text" id="customWordInput" placeholder="e.g. Chatpate / चटपटे" class="w-full rounded-xl px-3 py-2 text-xs border focus:outline-none" style="background: var(--bg-body); border-color: var(--border-color); color: var(--text-primary);">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold block mb-1" style="color: var(--text-primary);">Imposter Hint Clue</label>
+                    <input type="text" id="customHintInput" placeholder="e.g. Spicy street snack mixed in a bowl" class="w-full rounded-xl px-3 py-2 text-xs border focus:outline-none" style="background: var(--bg-body); border-color: var(--border-color); color: var(--text-primary);">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold block mb-1" style="color: var(--text-primary);">Category Title</label>
+                    <input type="text" id="customCategoryInput" placeholder="e.g. Street Snacks" class="w-full rounded-xl px-3 py-2 text-xs border focus:outline-none" style="background: var(--bg-body); border-color: var(--border-color); color: var(--text-primary);">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeCustomWordModal()" class="px-4 py-2 rounded-xl text-xs font-semibold border" style="background: var(--bg-card-solid); border-color: var(--border-color); color: var(--text-secondary);">Cancel</button>
+                <button onclick="saveCustomWord()" class="px-4 py-2 rounded-xl text-xs font-bold text-white" style="background: var(--accent-primary);">Save Word</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* -------------------------------------------------------------
+         * 1. NEPALI DATABASE (With Clues for All Items)
+         * ------------------------------------------------------------- */
+        const NEPALI_DATABASE = [
+            {
+                id: 'foods',
+                title: 'Nepali Foods',
+                titleNepali: 'नेपाली परिकार',
+                icon: '🍲',
+                items: [
+                    { word: 'Momo / मम:', hint: 'Popular steamed/fried dough dumplings served with spicy tomato chutney.' },
+                    { word: 'Dal Bhat / दाल भात', hint: 'The everyday staple meal consisting of cooked lentils and steamed rice.' },
+                    { word: 'Sel Roti / सेल रोटी', hint: 'Ring-shaped crisp rice-flour doughnut fried during Dashain and Tihar.' },
+                    { word: 'Yomari / योमरी', hint: 'Steamed rice flour pastry shaped like a fig/fish, filled with sweet chaku or khoya.' },
+                    { word: 'Dhido / ढिँडो', hint: 'Traditional dense mash made by slowly stirring buckwheat or millet flour in boiling water.' },
+                    { word: 'Samay Baji / समय बजी', hint: 'Newari ceremonial platter containing beaten rice, choila, boiled egg, and black soybeans.' },
+                    { word: 'Gundruk / गुन्दुक', hint: 'Fermented green leafy vegetable soup or pickle with a tangy fermented aroma.' },
+                    { word: 'Laphing / लाफिङ', hint: 'Spicy Tibetan cold noodle roll snack popular around Bouddha and street corners.' },
+                    { word: 'Chatpate / चटपटे', hint: 'Tangy street snack made by tossing puffed rice, instant noodles, legumes, and lime juice.' }
+                ]
+            },
+            {
+                id: 'places',
+                title: 'Famous Places',
+                titleNepali: 'प्रख्यात ठाउँहरू',
+                icon: '🏔️',
+                items: [
+                    { word: 'Mount Everest / सगरमाथा', hint: 'The highest peak in the world located in the Solukhumbu district.' },
+                    { word: 'Pashupatinath / पशुपतिनाथ', hint: 'Sacred Hindu temple dedicated to Lord Shiva on the banks of the Bagmati River.' },
+                    { word: 'Janaki Mandir / जानकी मन्दिर', hint: 'Grand white temple in Janakpur dedicated to Goddess Sita.' },
+                    { word: 'Fewa Lake / फेवा ताल', hint: 'Famous freshwater lake in Pokhara reflecting Mount Machhapuchhre.' },
+                    { word: 'Muktinath / मुक्तिनाथ', hint: 'Sacred pilgrimage site in Mustang known for its 108 stone water spouts.' },
+                    { word: 'Lumbini / लुम्बिनी', hint: 'UNESCO World Heritage site recognized as the birthplace of Lord Buddha.' },
+                    { word: 'Chitwan National Park / चितवन', hint: 'Famous jungle safari reserve home to one-horned rhinos and Bengal tigers.' }
+                ]
+            },
+            {
+                id: 'people',
+                title: 'Famous Personalities',
+                titleNepali: 'चर्चित व्यक्तित्वहरू',
+                icon: '🌟',
+                items: [
+                    { word: 'Rajesh Hamal / राजेश हमाल', hint: 'Iconic veteran actor revered as the Maha-Nayak of Nepali cinema.' },
+                    { word: 'Maha Jodi / मह जोडी', hint: 'Famous comedy duo Madan Krishna Shrestha and Hari Bansha Acharya.' },
+                    { word: 'Paras Khadka / पारस खड्का', hint: 'Legendary former captain of the Nepal national cricket team.' },
+                    { word: 'Laxmi Prasad Devkota / लक्ष्मीप्रसाद देवकोटा', hint: 'Revered Great Poet (Maha Kavi) who authored the epic Muna Madan.' },
+                    { word: 'Kulman Ghising / कुलमान घिसिङ', hint: 'Former NEA Director credited with eliminating daily load-shedding.' },
+                    { word: 'Dr. Sanduk Ruit / डा. सन्दुक रुइत', hint: 'World-renowned eye surgeon who restored vision to thousands using low-cost lenses.' }
+                ]
+            },
+            {
+                id: 'festivals',
+                title: 'Festivals & Culture',
+                titleNepali: 'चाडपर्व र संस्कृति',
+                icon: '🎊',
+                items: [
+                    { word: 'Dashain / दशैँ', hint: 'Nepal’s biggest 15-day festival celebrating victory of good over evil with tika and kites.' },
+                    { word: 'Tihar / तिहार', hint: 'The festival of lights celebrating animals, Goddess Laxmi, and Bhai Tika.' },
+                    { word: 'Holi / फागु पूर्णिमा', hint: 'Spring festival of colors celebrated with colored powders and water.' },
+                    { word: 'Teej / तीज', hint: 'Festival celebrated by women in red attire with fasting, music, and dancing.' },
+                    { word: 'Chhath / छठ पर्व', hint: 'Festival worshiping the Sun God at riverbanks during sunset and sunrise.' }
+                ]
+            },
+            {
+                id: 'popculture',
+                title: 'Nepali Daily Life',
+                titleNepali: 'नेपाली जनजीवन',
+                icon: '🚌',
+                items: [
+                    { word: 'Tempo / टेम्पो', hint: 'Three-wheeled electric or gas public transit vehicle common in urban streets.' },
+                    { word: 'Sajha Bus / साझा बस', hint: 'Green public transit buses operating across Kathmandu valley routes.' },
+                    { word: 'Chiya Pasal / चिया पसल', hint: 'Corner tea stalls where locals gather to sip milk tea and discuss current events.' },
+                    { word: 'Khukuri / खुकुरी', hint: 'Traditional curved Nepali steel blade knife associated with Gurkha heritage.' },
+                    { word: 'Dhaka Topi / ढाका टोपी', hint: 'Traditional patterned fabric headwear worn as part of national attire.' }
+                ]
+            }
+        ];
+
+        const STARTER_PROMPTS = [
+            "If you encountered this in your daily life, how often would you experience it?",
+            "What color or texture do you associate with this topic?",
+            "Is this something enjoyed with family or friends?",
+            "Would you find this more inside Kathmandu Valley or in rural districts?",
+            "How accessible or affordable is this for an average Nepali?",
+            "Is this tied to a specific season or time of day?"
+        ];
+
+        /* -------------------------------------------------------------
+         * 2. STATE MANAGEMENT & AUDIO SYSTEM
+         * ------------------------------------------------------------- */
+        let players = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+        let playerScores = {};
+        let selectedCategory = NEPALI_DATABASE[0];
+        let currentItem = { word: '', hint: '' };
+        let imposterIndices = [];
+        let currentRevealIndex = 0;
+        let isCardFlipped = false;
+        let timerInterval = null;
+        let timerSeconds = 180;
+        let selectedSuspectIndex = null;
+        let isSoundEnabled = true;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (!isSoundEnabled) return;
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+                if (type === 'flip') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(600, now + 0.1);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+                } else if (type === 'hint') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.1);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else if (type === 'win') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.setValueAtTime(554.37, now + 0.15);
+                    osc.frequency.setValueAtTime(659.25, now + 0.3);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.45);
+                    osc.start(now);
+                    osc.stop(now + 0.45);
+                }
+            } catch (e) {
+                console.log("Audio play suppressed");
+            }
+        }
+
+        function toggleSound() {
+            isSoundEnabled = !isSoundEnabled;
+            const icon = document.getElementById('soundIcon');
+            icon.className = isSoundEnabled ? 'fas fa-volume-up text-amber-400 text-sm' : 'fas fa-volume-mute text-slate-500 text-sm';
+        }
+
+        /* -------------------------------------------------------------
+         * 3. THEME SUITE SWITCHER
+         * ------------------------------------------------------------- */
+        function setTheme(themeName) {
+            const root = document.documentElement;
+            if (themeName === 'default') {
+                root.removeAttribute('data-theme');
+            } else {
+                root.setAttribute('data-theme', themeName);
+            }
+            toggleThemeModal();
+            playSound('flip');
+        }
+
+        function toggleThemeModal() {
+            const modal = document.getElementById('themeModal');
+            modal.classList.toggle('hidden');
+        }
+
+        /* -------------------------------------------------------------
+         * 4. SETUP & INITIALIZATION
+         * ------------------------------------------------------------- */
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPlayerInputs();
+            renderCategories();
+        });
+
+        function renderPlayerInputs() {
+            const container = document.getElementById('playerInputsContainer');
+            document.getElementById('playerCount').innerText = players.length;
+            container.innerHTML = '';
+
+            players.forEach((player, idx) => {
+                if (!(player in playerScores)) playerScores[player] = 0;
+
+                const div = document.createElement('div');
+                div.className = 'flex items-center gap-1.5 p-1.5 rounded-xl border';
+                div.style.background = 'var(--bg-body)';
+                div.style.borderColor = 'var(--border-color)';
+                div.innerHTML = `
+                    <i class="fas fa-user text-xs opacity-50 ml-1.5"></i>
+                    <input type="text" value="${player}" onchange="updatePlayerName(${idx}, this.value)" 
+                           class="w-full bg-transparent text-xs font-semibold focus:outline-none" style="color: var(--text-primary);">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function updatePlayerName(idx, val) {
+            const trimmed = val.trim() || `Player ${idx + 1}`;
+            const oldName = players[idx];
+            players[idx] = trimmed;
+            if (oldName in playerScores) {
+                playerScores[trimmed] = playerScores[oldName];
+                delete playerScores[oldName];
+            } else {
+                playerScores[trimmed] = 0;
+            }
+        }
+
+        function addPlayer() {
+            if (players.length < 10) {
+                players.push(`Player ${players.length + 1}`);
+                renderPlayerInputs();
+            }
+        }
+
+        function removePlayer() {
+            if (players.length > 3) {
+                const removedPlayer = players.pop();
+                delete playerScores[removedPlayer];
+                renderPlayerInputs();
+            }
+        }
+
+        function renderCategories() {
+            const grid = document.getElementById('categoryGrid');
+            grid.innerHTML = '';
+
+            NEPALI_DATABASE.forEach((cat) => {
+                const isSelected = selectedCategory.id === cat.id;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectCategory(cat.id);
+                btn.className = `p-3 rounded-2xl text-left border flex flex-col justify-between transition ${
+                    isSelected ? 'shadow-md ring-2 ring-amber-400' : 'hover:opacity-90'
+                }`;
+                btn.style.background = isSelected ? 'var(--bg-card-solid)' : 'var(--bg-body)';
+                btn.style.borderColor = isSelected ? 'var(--accent-gold)' : 'var(--border-color)';
+                
+                btn.innerHTML = `
+                    <div class="text-xl mb-1">${cat.icon}</div>
+                    <div>
+                        <div class="text-xs font-bold" style="color: var(--text-primary);">${cat.title}</div>
+                        <div class="text-[10px] font-nepali" style="color: var(--text-secondary);">${cat.titleNepali}</div>
+                    </div>
+                `;
+                grid.appendChild(btn);
+            });
+        }
+
+        function selectCategory(catId) {
+            const found = NEPALI_DATABASE.find(c => c.id === catId);
+            if (found) {
+                selectedCategory = found;
+                renderCategories();
+            }
+        }
+
+        /* -------------------------------------------------------------
+         * 5. GAME LOGIC & CARD REVEAL
+         * ------------------------------------------------------------- */
+        function startGame() {
+            if (!selectedCategory.items || selectedCategory.items.length === 0) {
+                alert("Please select a valid category!");
+                return;
+            }
+
+            const randomIdx = Math.floor(Math.random() * selectedCategory.items.length);
+            currentItem = selectedCategory.items[randomIdx];
+
+            const imposterCountSelect = parseInt(document.getElementById('imposterCountSelect').value);
+            const actualImposterCount = Math.min(imposterCountSelect, Math.floor(players.length / 2));
+            
+            imposterIndices = [];
+            while (imposterIndices.length < actualImposterCount) {
+                const rand = Math.floor(Math.random() * players.length);
+                if (!imposterIndices.includes(rand)) imposterIndices.push(rand);
+            }
+
+            currentRevealIndex = 0;
+            isCardFlipped = false;
+
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = null;
+
+            showScreen('revealScreen');
+            updateRevealTurnUI();
+        }
+
+        function updateRevealTurnUI() {
+            const currentPlayer = players[currentRevealIndex];
+            document.getElementById('revealPlayerName').innerText = currentPlayer;
+            
+            const cardInner = document.getElementById('cardInner');
+            cardInner.classList.remove('flipped');
+            isCardFlipped = false;
+
+            const nextBtn = document.getElementById('nextPlayerBtn');
+            nextBtn.disabled = true;
+            nextBtn.className = "w-full py-4 rounded-2xl font-bold text-sm transition flex items-center justify-center gap-2 opacity-50 cursor-not-allowed";
+
+            const isImposter = imposterIndices.includes(currentRevealIndex);
+            const showCatToImposter = document.getElementById('showCategoryToggle').checked;
+            const allowHints = document.getElementById('allowHintsToggle').checked;
+            
+            const contentDiv = document.getElementById('secretDisplayContent');
+            document.getElementById('cardCategoryBadge').innerText = selectedCategory.title;
+
+            if (isImposter) {
+                contentDiv.innerHTML = `
+                    <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center imposter-glow" style="background: rgba(220, 38, 38, 0.15); border: 2px solid var(--accent-primary);">
+                        <i class="fas fa-user-ninja text-3xl" style="color: var(--accent-primary);"></i>
+                    </div>
+                    <h3 class="text-2xl font-black uppercase tracking-wider" style="color: var(--accent-primary);">IMPOSTER / ढोंगी</h3>
+                    <p class="text-xs" style="color: var(--text-secondary);">Blend in! Listen closely to discover the secret topic.</p>
+                    
+                    ${showCatToImposter ? `<div class="mt-1 text-xs py-1 px-3 rounded-lg border inline-block" style="background: var(--bg-body); border-color: var(--border-color); color: var(--accent-gold);">Category: <b>${selectedCategory.title}</b></div>` : ''}
+
+                    ${allowHints ? `
+                        <div class="pt-2">
+                            <div id="imposterHintBox" class="hidden text-xs p-3 rounded-xl text-left border" style="background: var(--bg-body); border-color: var(--accent-gold); color: var(--accent-gold);">
+                                <span class="font-bold block mb-0.5" style="color: var(--text-primary);"><i class="fas fa-lightbulb"></i> Hint Clue:</span>
+                                <span>${currentItem.hint || 'A key topic in this category.'}</span>
+                            </div>
+                            <button id="revealHintBtn" onclick="revealImposterHint(event)" type="button" class="mt-1 py-1.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 mx-auto border" style="background: rgba(245, 158, 11, 0.15); border-color: var(--accent-gold); color: var(--accent-gold);">
+                                <i class="fas fa-magic"></i> REVEAL HINT
+                            </button>
+                        </div>
+                    ` : ''}
+                `;
+            } else {
+                contentDiv.innerHTML = `
+                    <div class="w-16 h-16 mx-auto rounded-full border-2 flex items-center justify-center" style="background: rgba(16, 185, 129, 0.15); border-color: #10b981;">
+                        <i class="fas fa-shield-alt text-3xl text-emerald-400"></i>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">CITIZEN / नागरिक</span>
+                    <h3 class="text-2xl font-black py-1" style="color: var(--accent-gold);">${currentItem.word}</h3>
+                    <p class="text-xs" style="color: var(--text-secondary);">Give clues without giving away the exact word!</p>
+                `;
+            }
+        }
+
+        function revealImposterHint(event) {
+            if (event) event.stopPropagation();
+            const hintBox = document.getElementById('imposterHintBox');
+            const btn = document.getElementById('revealHintBtn');
+            if (hintBox && btn) {
+                hintBox.classList.remove('hidden');
+                btn.classList.add('hidden');
+                playSound('hint');
+            }
+        }
+
+        function toggleCardFlip() {
+            const cardInner = document.getElementById('cardInner');
+            isCardFlipped = !isCardFlipped;
+            playSound('flip');
+
+            if (isCardFlipped) {
+                cardInner.classList.add('flipped');
+                const nextBtn = document.getElementById('nextPlayerBtn');
+                nextBtn.disabled = false;
+                nextBtn.className = "w-full py-4 rounded-2xl font-black text-white text-sm shadow-lg flex items-center justify-center gap-2 transform active:scale-95 transition";
+                nextBtn.style.background = "linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))";
+            } else {
+                cardInner.classList.remove('flipped');
+            }
+        }
+
+        function nextPlayerTurn() {
+            currentRevealIndex++;
+            if (currentRevealIndex < players.length) {
+                updateRevealTurnUI();
+            } else {
+                startDiscussionPhase();
+            }
+        }
+
+        /* -------------------------------------------------------------
+         * 6. DISCUSSION & TIMER
+         * ------------------------------------------------------------- */
+        function startDiscussionPhase() {
+            showScreen('discussionScreen');
+            document.getElementById('firstSpeakerName').innerText = players[Math.floor(Math.random() * players.length)];
+            generateRandomPrompt();
+            resetTimer();
+            startTimer();
+        }
+
+        function generateRandomPrompt() {
+            const prompt = STARTER_PROMPTS[Math.floor(Math.random() * STARTER_PROMPTS.length)];
+            document.getElementById('starterQuestionText').innerText = `"${prompt}"`;
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (timerSeconds > 0) {
+                    timerSeconds--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+            }, 1000);
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('timerToggleBtn');
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                btn.innerHTML = `<i class="fas fa-play"></i> Resume`;
+            } else {
+                startTimer();
+                btn.innerHTML = `<i class="fas fa-pause"></i> Pause`;
+            }
+        }
+
+        function resetTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = null;
+            timerSeconds = 180;
+            updateTimerDisplay();
+            document.getElementById('timerToggleBtn').innerHTML = `<i class="fas fa-pause"></i> Pause`;
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            document.getElementById('timerDisplay').innerText = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        /* -------------------------------------------------------------
+         * 7. VOTING & RESULTS
+         * ------------------------------------------------------------- */
+        function goToVotingPhase() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = null;
+            showScreen('votingScreen');
+            selectedSuspectIndex = null;
+
+            const votingList = document.getElementById('votingList');
+            votingList.innerHTML = '';
+
+            players.forEach((p, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectSuspect(idx, btn);
+                btn.className = `suspect-card p-3 rounded-2xl border text-left flex items-center justify-between transition hover:opacity-95`;
+                btn.style.background = 'var(--bg-card-solid)';
+                btn.style.borderColor = 'var(--border-color)';
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-full border flex items-center justify-center font-bold text-xs" style="background: var(--bg-body); border-color: var(--border-color); color: var(--accent-gold);">
+                            ${p.charAt(0).toUpperCase()}
+                        </div>
+                        <span class="font-bold text-xs" style="color: var(--text-primary);">${p}</span>
+                    </div>
+                    <i class="fas fa-crosshairs text-slate-500 text-sm check-icon"></i>
+                `;
+                votingList.appendChild(btn);
+            });
+
+            const confirmBtn = document.getElementById('confirmAccusationBtn');
+            confirmBtn.disabled = true;
+            confirmBtn.className = "w-full py-3.5 rounded-2xl font-black text-sm flex items-center justify-center gap-2 transition opacity-50 cursor-not-allowed";
+        }
+
+        function selectSuspect(idx, el) {
+            playSound('flip');
+            selectedSuspectIndex = idx;
+
+            document.querySelectorAll('.suspect-card').forEach(card => {
+                card.style.borderColor = 'var(--border-color)';
+                card.querySelector('.check-icon').className = 'fas fa-crosshairs text-slate-500 text-sm check-icon';
+            });
+
+            el.style.borderColor = 'var(--accent-primary)';
+            el.querySelector('.check-icon').className = 'fas fa-check-circle text-sm check-icon';
+            el.querySelector('.check-icon').style.color = 'var(--accent-primary)';
+
+            const confirmBtn = document.getElementById('confirmAccusationBtn');
+            confirmBtn.disabled = false;
+            confirmBtn.className = "w-full py-3.5 rounded-2xl font-black text-white text-sm flex items-center justify-center gap-2 transform active:scale-95 transition shadow-lg";
+            confirmBtn.style.background = "linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))";
+        }
+
+        function revealSuspectResult() {
+            if (selectedSuspectIndex === null) return;
+
+            const isImposter = imposterIndices.includes(selectedSuspectIndex);
+
+            if (isImposter) {
+                showImposterGuessScreen(players[selectedSuspectIndex]);
+            } else {
+                finishGame(true, `Wrong Accusation! ${players[selectedSuspectIndex]} was an Innocent Citizen.`);
+            }
+        }
+
+        function showImposterGuessScreen(imposterName) {
+            showScreen('imposterGuessScreen');
+            document.getElementById('caughtImposterName').innerText = imposterName;
+            document.getElementById('guessCategoryTitle').innerText = selectedCategory.title;
+
+            const grid = document.getElementById('guessOptionsGrid');
+            grid.innerHTML = '';
+
+            const options = selectedCategory.items.map(item => item.word);
+            options.sort(() => Math.random() - 0.5);
+
+            options.forEach(word => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => submitImposterGuess(word);
+                btn.className = 'p-2.5 rounded-xl border text-xs font-semibold text-left transition hover:opacity-90';
+                btn.style.background = 'var(--bg-body)';
+                btn.style.borderColor = 'var(--border-color)';
+                btn.style.color = 'var(--text-primary)';
+                btn.innerText = word;
+                grid.appendChild(btn);
+            });
+        }
+
+        function submitImposterGuess(guessedWord) {
+            if (guessedWord === currentItem.word) {
+                finishGame(true, `Imposter correctly guessed "${currentItem.word}" to STEAL the victory!`);
+            } else {
+                finishGame(false, `Imposter guessed wrong ("${guessedWord}"). Citizens win!`);
+            }
+        }
+
+        function skipImposterGuess() {
+            finishGame(false, `Imposter gave up. Citizens win!`);
+        }
+
+        function finishGame(imposterWon, reasonText) {
+            showScreen('resultScreen');
+            playSound('win');
+
+            const banner = document.getElementById('resultBanner');
+            const title = document.getElementById('resultTitle');
+            const subtitle = document.getElementById('resultSubtitle');
+            const emoji = document.getElementById('resultEmoji');
+
+            if (imposterWon) {
+                banner.style.background = "linear-gradient(135deg, var(--accent-primary), #8b0000)";
+                emoji.innerText = "🥷";
+                title.innerText = "IMPOSTER WINS!";
+                subtitle.innerText = "ढोंगीले विजय हासिल गर्यो!";
+
+                imposterIndices.forEach(i => {
+                    const pName = players[i];
+                    playerScores[pName] = (playerScores[pName] || 0) + 2;
+                });
+            } else {
+                banner.style.background = "linear-gradient(135deg, #059669, #0d9488)";
+                emoji.innerText = "🏆";
+                title.innerText = "CITIZENS WIN!";
+                subtitle.innerText = "नागरिकहरूको जीत भयो!";
+
+                players.forEach((p, i) => {
+                    if (!imposterIndices.includes(i)) {
+                        playerScores[p] = (playerScores[p] || 0) + 1;
+                    }
+                });
+            }
+
+            document.getElementById('finalSecretWord').innerText = currentItem.word;
+
+            const breakdownList = document.getElementById('rolesBreakdownList');
+            breakdownList.innerHTML = '';
+            players.forEach((p, idx) => {
+                const isImp = imposterIndices.includes(idx);
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center p-2 rounded-xl border";
+                div.style.background = 'var(--bg-body)';
+                div.style.borderColor = 'var(--border-color)';
+                div.innerHTML = `
+                    <span class="font-semibold" style="color: var(--text-primary);">${p}</span>
+                    <span class="${isImp ? 'font-bold text-rose-500' : 'text-emerald-400'}">${isImp ? '🥷 Imposter' : '🛡️ Citizen'}</span>
+                `;
+                breakdownList.appendChild(div);
+            });
+
+            const sbList = document.getElementById('scoreboardList');
+            sbList.innerHTML = '';
+            Object.entries(playerScores).forEach(([pName, score]) => {
+                const div = document.createElement('div');
+                div.className = "p-2 rounded-xl flex justify-between items-center border";
+                div.style.background = 'var(--bg-card-solid)';
+                div.style.borderColor = 'var(--border-color)';
+                div.innerHTML = `
+                    <span class="font-semibold truncate" style="color: var(--text-primary);">${pName}</span>
+                    <span class="font-bold" style="color: var(--accent-gold);">${score} pts</span>
+                `;
+                sbList.appendChild(div);
+            });
+        }
+
+        function resetGameSamePlayers() {
+            startGame();
+        }
+
+        function returnToSetup() {
+            showScreen('setupScreen');
+        }
+
+        /* -------------------------------------------------------------
+         * 8. CUSTOM WORD DIALOG
+         * ------------------------------------------------------------- */
+        function openCustomWordModal() {
+            document.getElementById('customWordModal').classList.remove('hidden');
+        }
+
+        function closeCustomWordModal() {
+            document.getElementById('customWordModal').classList.add('hidden');
+        }
+
+        function saveCustomWord() {
+            const wordVal = document.getElementById('customWordInput').value.trim();
+            const hintVal = document.getElementById('customHintInput').value.trim() || 'Custom user added clue.';
+            const catVal = document.getElementById('customCategoryInput').value.trim() || 'Custom Group';
+
+            if (!wordVal) return;
+
+            let customCatObj = NEPALI_DATABASE.find(c => c.id === 'custom');
+            if (!customCatObj) {
+                customCatObj = {
+                    id: 'custom',
+                    title: catVal,
+                    titleNepali: 'आफ्नै शब्द',
+                    icon: '✨',
+                    items: []
+                };
+                NEPALI_DATABASE.push(customCatObj);
+            }
+
+            customCatObj.items.push({ word: wordVal, hint: hintVal });
+            selectedCategory = customCatObj;
+            
+            document.getElementById('customWordInput').value = '';
+            document.getElementById('customHintInput').value = '';
+            renderCategories();
+            closeCustomWordModal();
+        }
+
+        function showScreen(screenId) {
+            ['setupScreen', 'revealScreen', 'discussionScreen', 'votingScreen', 'imposterGuessScreen', 'resultScreen'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
